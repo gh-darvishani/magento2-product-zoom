@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="darvishani_zoom" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Zoom module</label>
+            <tab>Darvishani</tab>
+            <resource>Darvishani_Zoom::config</resource>
+            <class>separator-top</class>
+
+            <group id="zoom" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Zoom Config</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="mini_hidden" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>disable zoom at</label>
+                    <comment>minimum with of windows to disable zoom (default 575)</comment>
+                 </field>
+                <field id="magnification_degree" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>magnification degree</label>
+                    <comment>magnification degree zoom(default 3)</comment>
+                 </field>
+                <field id="zoom_container_w" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>zoom container width</label>
+                    <comment>with as px or percent (default 500px)</comment>
+                 </field>
+                <field id="zoom_container_h" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>zoom container height</label>
+                    <comment>height as px or percent (default 500px)</comment>
+                 </field>
+                <field id="zoom_magnification_height" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>zoom magnification height</label>
+                    <comment>height as px or percent (default 100px)</comment>
+                 </field>
+                <field id="zoom_magnification_width" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>zoom magnification width</label>
+                    <comment>width as px or percent (default 100px)</comment>
+                 </field>
+                <field id="zoom_container_position_r" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>zoom container position right</label>
+                    <comment>width as px or percent (default -300px)</comment>
+                 </field>
+                <field id="zoom_container_position_t" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>zoom container position top</label>
+                    <comment>width as px or percent (default 0)</comment>
+                 </field>
+            </group>
+        </section>
+
+
+    </system>
+</config>

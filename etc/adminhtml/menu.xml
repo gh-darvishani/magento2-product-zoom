@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add id="Darvishani::zoom_module" title="Zoom" module="Darvishani_Zoom" sortOrder="1" resource="Magento_Backend::content"  parent="Darvishani::core_module" />
+
+		<add id="Darvishani_Zoom::configuration" title="Zoom Config " module="Darvishani_Zoom" sortOrder="1" resource="Darvishani_Zoom::config" parent="Darvishani::zoom_module" action="adminhtml/system_config/edit/section/darvishani_zoom/"/>
+	</menu>
+</config>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <darvishani_zoom>
+            <zoom>
+                <enable>1</enable>
+                <mini_hidden>575</mini_hidden>
+                <magnification_degree>3</magnification_degree>
+                <zoom_container_w>500px</zoom_container_w>
+                <zoom_container_h>500px</zoom_container_h>
+                <zoom_container_position_t>0</zoom_container_position_t>
+                <zoom_container_position_r>-300px</zoom_container_position_r>
+                <zoom_magnification_width>100px</zoom_magnification_width>
+                <zoom_magnification_height>100px</zoom_magnification_height>
+            </zoom>
+        </darvishani_zoom>
+    </default>
+</config>

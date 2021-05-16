@@ -1,0 +1,309 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * Product media data template
+ *
+ * @var $block \Darvishani\Zoom\Block\Product\View\Gallery
+ */
+?>
+
+<?php
+ $zhelper=$block->helper;
+$images = $block->getGalleryImages()->getItems();
+$mainImage = current(array_filter($images, function ($img) use ($block) {
+    return $block->isMainImage($img);
+}));
+
+
+if (!empty($images) && empty($mainImage)) {
+    $mainImage = $block->getGalleryImages()->getFirstItem();
+}
+
+
+$helper = $block->getData('imageHelper');
+$mainImageData = $mainImage ?
+    $mainImage->getData('medium_image_url') :
+    $helper->getDefaultPlaceholderUrl('image');
+
+
+?>
+
+
+<div class="zoomBody">
+    <div class="gallery-placeholder _block-content-loading" data-gallery-role="gallery-placeholder">
+        <img
+                alt="main product photo"
+                class="gallery-placeholder__image"
+                src="<?= $mainImageData ?>"
+        />
+    </div>
+    <div id="zoomContainer"></div>
+    <div id="lensContainer"></div>
+</div>
+
+
+<script type="text/javascript">
+    let magnification_degree=<?=$zhelper->getMagnificationDegree()?>;
+    let galleryZoomRender = setInterval(function () {
+
+if (window.screen.width <= <?=$zhelper->getMiniWithToHiddenZoom()?>){
+    return;
+}
+
+        let bodyGallery = document.querySelector('[data-gallery-role="gallery"]');
+        let zoomBody = document.querySelector('.zoomBody');
+
+
+        if (!bodyGallery) {
+            return;
+        }
+
+
+        let result = document.querySelector('#zoomContainer');
+
+
+        let images = document.querySelectorAll('[data-gallery-role="gallery"] .fotorama__stage .fotorama__img');
+
+
+        if (images.length === 0) {
+            return;
+        }
+
+
+        for (let i = 0; i < images.length; i++) {
+            if (images[i].getAttribute('render') === 'true') {
+                continue;
+            }
+
+
+            images[i].setAttribute('render', 'true');
+
+
+            imageZoom(images[i]);
+        }
+
+
+        function imageZoom(img) {
+            var lens, cx, cy;
+
+
+            /* Create lens: */
+            lens = document.createElement('div');
+            lens.setAttribute('class', 'img-zoom-lens');
+
+
+            /* Insert lens: */
+            img.parentElement.insertBefore(lens, img);
+
+
+            /* Execute a function when someone moves the cursor over the image, or the lens: */
+            lens.addEventListener('mousemove', moveLens);
+            lens.addEventListener('mouseleave', mouseleave);
+            zoomBody.addEventListener('mouseleave', mouseleave);
+            img.addEventListener('mousemove', moveLens);
+            /* img.addEventListener('mouseleave', mouseleave); */
+
+
+            /* And also for touch screens: */
+            lens.addEventListener('touchmove', moveLens);
+            img.addEventListener('touchmove', moveLens);
+
+
+            mouseleave();
+
+
+            function mouseleave() {
+                result.style.display = 'none';
+                lens.style.display = 'none';
+            }
+
+
+            function moveLens(e) {
+
+
+                let ee = getCursorPos(e, zoomBody);
+
+
+                result.style.display = 'block';
+                lens.style.display = 'block';
+
+
+                // lens.style.width = (img.offsetWidth / magnification_degree) + 'px';
+                // lens.style.height = (img.offsetHeight / magnification_degree) + 'px';
+                lens.style.width = '<?=$zhelper->getZoomMagnificationWidth()?>';
+                lens.style.height ='<?=$zhelper->getZoomMagnificationHeight()?>';
+
+
+                result.style.width = (img.offsetWidth) + 'px';
+                result.style.height = (img.offsetHeight) + 'px';
+
+
+                result.style.left = (zoomBody.offsetLeft + zoomBody.offsetWidth) + 5 + 'px';
+
+
+                /* Calculate the ratio between result DIV and lens: */
+                cx = result.offsetWidth / lens.offsetWidth;
+                cy = result.offsetHeight / lens.offsetHeight;
+
+
+                /* Set background properties for the result DIV */
+                result.style.backgroundImage = 'url("' + img.src + '")';
+                result.style.backgroundSize = (img.width * cx) + 'px ' + (img.height * cy) + 'px';
+
+
+                let pos, x, xx, y, yy;
+
+
+                /* Prevent any other actions that may occur when moving over the image */
+                e.preventDefault();
+
+
+                /* Get the cursor's x and y positions: */
+                pos = getCursorPos(e);
+
+
+                /* Calculate the position of the lens: */
+                x = pos.x - (lens.offsetWidth / 2);
+                y = pos.y - (lens.offsetHeight / 2);
+
+                xx = ee.x - (lens.offsetWidth / 2);
+                yy = ee.y - (lens.offsetHeight / 2);
+
+                /* Prevent the lens from being positioned outside the image: */
+                if (x > img.width - lens.offsetWidth) {
+                    x = img.width - lens.offsetWidth;
+                }
+
+                // if (xx > img.width - lens.offsetWidth) {
+                //     xx =  pos.x - lens.offsetWidth;
+                // }
+
+                if (x < 0) {
+                    x = 0;
+                }
+
+                  if (xx < 0) {
+                    xx = 0;
+                }
+
+
+                if (y > img.height - lens.offsetHeight) {
+                    y = img.height - lens.offsetHeight;
+                }
+
+
+                if (yy > img.height - lens.offsetHeight) {
+                    // yy = img.height - lens.offsetHeight;
+                }
+
+
+                if (y < 0) {
+                    y = 0;
+                }
+
+
+
+
+                if (yy < 0) {
+                    yy = 0;
+                }
+
+
+                /* Set the position of the lens: */
+                lens.style.left = xx + 'px';
+                lens.style.top = yy + 'px';
+
+
+                /* Display what the lens 'sees': */
+                result.style.backgroundPosition = '-' + (x * cx) + 'px -' + (y * cy) + 'px';
+            }
+
+
+            function getCursorPos(e, target = null) {
+                var a, x = 0, y = 0;
+
+
+                e = e || window.event;
+
+
+                /* Get the x and y positions of the image: */
+                if (target !== null) {
+                    a = target.getBoundingClientRect();
+                } else {
+                    a = img.getBoundingClientRect();
+                }
+
+
+                /* Calculate the cursor's x and y coordinates, relative to the image: */
+                x = e.pageX - a.left;
+                y = e.pageY - a.top;
+
+
+                /* Consider any page scrolling: */
+                x = x - window.pageXOffset;
+                y = y - window.pageYOffset;
+
+
+                return {x: x, y: y};
+            }
+        }
+    }, 100)
+</script>
+
+
+<script type="text/x-magento-init">
+    {
+        "[data-gallery-role=gallery-placeholder]": {
+            "mage/gallery/gallery": {
+                "mixins":["magnifier/magnify"],
+                "magnifierOpts": <?= $block->getMagnifier() ?>,
+                "data": <?= $block->getGalleryImagesJson() ?>,
+                "options": <?= $block->getGalleryOptions()->getOptionsJson() ?>,
+                "fullscreen": <?= $block->getGalleryOptions()->getFSOptionsJson() ?>,
+                 "breakpoints": <?= $block->getBreakpoints() ?>
+            }
+        }
+    }
+
+</script>
+
+
+<style>
+    .img-zoom-container {
+        position: relative;
+    }
+
+
+    .img-zoom-lens {
+        position: absolute;
+        width: <?=$zhelper->getZoomMagnificationWidth()?>;
+        height: <?=$zhelper->getZoomMagnificationHeight()?>;
+        background: rgb(255 255 255);
+        opacity: 0.4;
+        z-index: 1;
+    }
+
+
+    #zoomContainer {
+        z-index: 9;
+        border: 1px solid #d4d4d4;
+        width: <?=$zhelper->getZoomContainerWidth()?>;
+        height: <?=$zhelper->getZoomContainerHeight()?>;
+        position: absolute;
+        top: <?=$zhelper->getZoomContainerPositionTop()?>;
+        right: <?=$zhelper->getZoomContainerPositionRight()?>;
+        background-repeat: no-repeat;
+        background-color: #fff;
+        display: none;
+    }
+
+    @media (max-width: <?=$zhelper->getMiniWithToHiddenZoom()?>px) {
+        .img-zoom-lens, #zoomContainer {
+            display: none !important;
+        }
+    }
+</style>

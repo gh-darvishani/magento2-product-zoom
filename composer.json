@@ -1,0 +1,22 @@
+{
+    "name": "darvishani/module-zoom",
+    "description": "darvishani zoom module",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "zoom",
+            "email": "gh.darviahani@live.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Darvishani\\Zoom\\": ""
+        }
+    }
+}
