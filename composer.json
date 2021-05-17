@@ -3,13 +3,16 @@
     "description": "darvishani zoom module",
     "type": "magento2-module",
     "license": "proprietary",
+    "version": "v1.0.0",
     "authors": [
         {
             "name": "zoom",
             "email": "gh.darviahani@live.com"
         }
     ],
+    "license": "MIT",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
       "darvishani/module-core": "*"
     },

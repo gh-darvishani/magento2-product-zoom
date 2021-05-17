@@ -2,8 +2,6 @@
 /**
  * Gallery
  *
- * @copyright Copyright © 2021 Staempfli AG. All rights reserved.
- * @author    juan.alonso@staempfli.com
  */
 
 namespace Darvishani\Zoom\Block\Product\View;
